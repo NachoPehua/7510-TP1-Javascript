@@ -115,7 +115,7 @@ this.parseDB = function () {
 }
 
 var acom_query=function(query){
-	return [query[0],query[1].split(",")]
+	return [query[0],query[1].split(", ")]
 }
 }
 

@@ -53,6 +53,7 @@ var add_Rule = function (rule){
 
 this.checkQuery  = function (query){
 	var pquery=parse_fact(query);
+	if (ff_names.includes(pquery[0])) {return is_Fact(pquery);} else if (rr_names.includes(pquery[0])) {return is_Rule(acom_query(pquery))} else false;
 }
 
 
@@ -96,19 +97,25 @@ var verify_Rule = function (rule,query){
 
 Rule.prototype.is_Valid = function(query) {
 	if (this.name==query[0]); {
+	var zipm = Object.assign({}, ...this.args.map((n, index) => ({[n]: query[1][index]})));
 	var correctFacts=[];
 	var aux;
+	this.factss.forEach(function (x) {aux=x;for (var k in zipm) {aux=aux.replace(k,zipm[k])};correctFacts.push(aux);});
 	return correctFacts.every(function (x){return is_Fact(parse_fact(x))});
 }
 	return false;
 }
-this.ff=[];
-this.rr=[];
-this.rr_names=[];
-this.ff_names=[];
+var ff=[];
+var rr=[];
+var rr_names=[];
+var ff_names=[];
 
 this.parseDB = function () {
 	create_db(db,ff,rr);
+}
+
+var acom_query=function(query){
+	return [query[0],query[1].split(",")]
 }
 }
 
